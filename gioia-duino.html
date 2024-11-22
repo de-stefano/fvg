@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miramare</title>
+    <style>
+        .carousel-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .carousel-images {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .carousel-images img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        /* Pallini indicatore */
+        .dots-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background-color: #717171;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="carousel-container" id="carousel">
+        <div class="carousel-images">
+            <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/43612172.jpg?k=0c15b4f7e91af354291ba8600c4ca63946f360ac0e5be6feaf615d3f1cabc1b2&o=&hp=1
+" alt="Immagine 1">
+            <img src="https://www.turismofvg.it/proxyvfs.axd/image_hd/r57537/milani_c1-162-2735-jpg?v=61418&ext=.jpg
+" alt="Immagine 2">
+            <img src="https://media.e-borghi.com/public/borghi/27_06_22-12_00_40-M1af3bf4ac0dbab246c4fe403b705fb0.jpg" alt="Immagine 3">
+<img src=" https://images.placesonline.com/photos/1721045118_castello-di-duino_2656599.jpg
+" alt="Immagine 4">
+
+
+
+        </div>
+        <button class="prev" onclick="prevImage()">&#10094;</button>
+        <button class="next" onclick="nextImage()">&#10095;</button>
+    </div>
+
+    <!-- Pallini indicatore -->
+    <div class="dots-container">
+        <span class="dot" onclick="currentImage(0)"></span>
+        <span class="dot" onclick="currentImage(1)"></span>
+        <span class="dot" onclick="currentImage(2)"></span>
+<span class="dot" onclick="currentImage(3)"></span>
+
+ 
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const images = document.querySelectorAll('.carousel-images img');
+        const totalImages = images.length;
+        const dots = document.querySelectorAll('.dot');
+        let interval;
+
+        // Mostra l'immagine corrente e aggiorna i pallini
+        function showImage(index) {
+            const carousel = document.querySelector('.carousel-images');
+            const imageWidth = images[0].clientWidth;
+            carousel.style.transform = `translateX(${-index * imageWidth}px)`;
+            updateDots(index);
+        }
+
+        // Avanza alla prossima immagine
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % totalImages;
+            showImage(currentIndex);
+        }
+
+        // Torna all'immagine precedente
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+            showImage(currentIndex);
+        }
+
+        // Aggiorna lo stato attivo dei pallini
+        function updateDots(index) {
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+        }
+
+        // Funzione per scorrere alle immagini selezionate dai pallini
+        function currentImage(index) {
+            currentIndex = index;
+            showImage(index);
+        }
+
+        // Scorrimento automatico
+        function startAutoSlide() {
+            interval = setInterval(nextImage, 3000); // Cambia immagine ogni 3 secondi
+        }
+
+        // Pausa sul passaggio del mouse
+        function pauseAutoSlide() {
+            clearInterval(interval);
+        }
+
+        // Riprendi lo scorrimento quando il mouse esce dal carosello
+        function resumeAutoSlide() {
+            startAutoSlide();
+        }
+
+        // Aggiungi il ridimensionamento automatico in base alla larghezza delle immagini
+        window.addEventListener('resize', () => showImage(currentIndex));
+
+        // Avvia lo scorrimento automatico all'avvio
+        startAutoSlide();
+
+        // Aggiungi listener per la pausa e la ripresa
+        const carouselContainer = document.getElementById('carousel');
+        carouselContainer.addEventListener('mouseenter', pauseAutoSlide);
+        carouselContainer.addEventListener('mouseleave', resumeAutoSlide);
+
+    </script>
+
+</body>
+</html>
